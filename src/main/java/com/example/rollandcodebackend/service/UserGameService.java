@@ -16,11 +16,11 @@ public class UserGameService {
         this.repository = repository;
     }
 
-    public List<UserGame> getAll() {
-        return repository.findAll();
+    public List<UserGame> getGamesByUserEmail(String email) {
+        return repository.findByUserEmail(email);
     }
 
-    public UserGame create(UserGameRequest request) {
+    public UserGame createGame(UserGameRequest request) {
         UserGame game = new UserGame(
                 request.getName(),
                 request.getGenre(),
@@ -32,7 +32,7 @@ public class UserGameService {
         return repository.save(game);
     }
 
-    public void delete(Long id) {
+    public void deleteGame(Long id) {
         repository.deleteById(id);
     }
 }

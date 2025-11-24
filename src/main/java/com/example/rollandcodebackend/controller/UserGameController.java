@@ -3,13 +3,14 @@ package com.example.rollandcodebackend.controller;
 import com.example.rollandcodebackend.dto.UserGameRequest;
 import com.example.rollandcodebackend.entity.UserGame;
 import com.example.rollandcodebackend.service.UserGameService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/usergames")
-@CrossOrigin("*")
+@CrossOrigin
 public class UserGameController {
 
     private final UserGameService service;
@@ -19,17 +20,20 @@ public class UserGameController {
     }
 
     @GetMapping
-    public List<UserGame> getAll() {
-        return service.getAll();
+    public ResponseEntity<List<UserGame>> getUserGames(@RequestParam("email") String email) {
+        List<UserGame> games = service.getGamesByUserEmail(email);
+        return ResponseEntity.ok(games);
     }
 
     @PostMapping
-    public UserGame create(@RequestBody UserGameRequest request) {
-        return service.create(request);
+    public ResponseEntity<UserGame> createUserGame(@RequestBody UserGameRequest request) {
+        UserGame created = service.createGame(request);
+        return ResponseEntity.ok(created);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> deleteUserGame(@PathVariable Long id) {
+        service.deleteGame(id);
+        return ResponseEntity.noContent().build();
     }
 }
